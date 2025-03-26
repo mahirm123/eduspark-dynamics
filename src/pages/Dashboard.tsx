@@ -2,13 +2,14 @@
 import { useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import { useUserDashboard } from "@/hooks/useUserDashboard";
+import { UserRole } from "@/components/dashboard/DashboardSidebar";
 
 const Dashboard = () => {
   const { userData, isLoading } = useUserDashboard();
 
   // For demonstration purposes, we'll redirect based on a simulated role
   // In a real application, this would come from an authentication system
-  const userRole = "student"; // Could be "student", "teacher", or "admin"
+  const userRole: UserRole = "student"; // Could be "student", "teacher", or "admin"
 
   if (isLoading) {
     return (
