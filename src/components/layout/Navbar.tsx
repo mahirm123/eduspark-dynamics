@@ -7,8 +7,8 @@ import { useEffect, useState } from "react";
 import gsap from "gsap";
 
 const Navbar = () => {
-  // For demo purposes only - in a real app this would come from auth state
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userRole, setUserRole] = useState<string | null>(null);
   
   useEffect(() => {
     // Simple animation for navbar elements
@@ -24,12 +24,23 @@ const Navbar = () => {
       }
     );
     
-    // For demo purposes - simulate login status from localStorage
+    // Check login status from localStorage
     const storedLoginStatus = localStorage.getItem("isLoggedIn");
+    const storedUserRole = localStorage.getItem("userRole");
+    
     if (storedLoginStatus === "true") {
       setIsLoggedIn(true);
+      setUserRole(storedUserRole);
     }
   }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("userRole");
+    setIsLoggedIn(false);
+    setUserRole(null);
+    window.location.href = "/";
+  };
 
   return (
     <nav className="border-b bg-background">
@@ -56,16 +67,18 @@ const Navbar = () => {
           
           {isLoggedIn ? (
             <>
-              <Link to="/dashboard" className="nav-item">
+              {userRole && (
+                <span className="text-sm text-muted-foreground nav-item hidden md:inline-block">
+                  Logged in as {userRole}
+                </span>
+              )}
+              <Link to={userRole === "admin" ? "/dashboard/admin" : userRole === "teacher" ? "/dashboard/teacher" : "/dashboard"} className="nav-item">
                 <Button variant="ghost">Dashboard</Button>
               </Link>
               <Button 
                 variant="outline" 
                 className="nav-item"
-                onClick={() => {
-                  setIsLoggedIn(false);
-                  localStorage.removeItem("isLoggedIn");
-                }}
+                onClick={handleLogout}
               >
                 Logout
               </Button>

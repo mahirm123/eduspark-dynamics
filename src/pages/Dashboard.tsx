@@ -1,15 +1,20 @@
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { useUserDashboard } from "@/hooks/useUserDashboard";
 import { UserRole } from "@/components/dashboard/DashboardSidebar";
 
 const Dashboard = () => {
   const { userData, isLoading } = useUserDashboard();
+  const [userRole, setUserRole] = useState<UserRole>("student");
 
-  // For demonstration purposes, we'll redirect based on a simulated role
-  // In a real application, this would come from an authentication system
-  const userRole: UserRole = "student"; // Could be "student", "teacher", or "admin"
+  useEffect(() => {
+    // Get user role from localStorage (set during login)
+    const storedRole = localStorage.getItem("userRole") as UserRole | null;
+    if (storedRole && (storedRole === "student" || storedRole === "teacher" || storedRole === "admin")) {
+      setUserRole(storedRole);
+    }
+  }, []);
 
   if (isLoading) {
     return (

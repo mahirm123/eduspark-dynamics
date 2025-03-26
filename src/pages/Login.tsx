@@ -9,6 +9,13 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { useToast } from "@/hooks/use-toast";
 import gsap from "gsap";
 
+// Test credentials for demonstration
+const testUsers = [
+  { email: "student@example.com", password: "password", role: "student" },
+  { email: "teacher@example.com", password: "password", role: "teacher" },
+  { email: "admin@example.com", password: "password", role: "admin" }
+];
+
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -48,17 +55,43 @@ const Login = () => {
     
     setIsLoading(true);
     
-    // Simulate API call
+    // Simulate authentication
     setTimeout(() => {
-      // For demo purposes, consider any login successful
-      toast({
-        title: "Success",
-        description: "You have been logged in successfully",
-      });
+      const user = testUsers.find(
+        (user) => user.email === email && user.password === password
+      );
+      
+      if (user) {
+        // Store user role and login status
+        localStorage.setItem("userRole", user.role);
+        localStorage.setItem("isLoggedIn", "true");
+        
+        toast({
+          title: "Success",
+          description: "You have been logged in successfully",
+        });
+        
+        // Redirect based on role
+        switch (user.role) {
+          case "teacher":
+            navigate("/dashboard/teacher");
+            break;
+          case "admin":
+            navigate("/dashboard/admin");
+            break;
+          default:
+            navigate("/dashboard");
+        }
+      } else {
+        toast({
+          title: "Error",
+          description: "Invalid email or password",
+          variant: "destructive",
+        });
+      }
       
       setIsLoading(false);
-      navigate("/dashboard");
-    }, 1500);
+    }, 1000);
   };
 
   return (
