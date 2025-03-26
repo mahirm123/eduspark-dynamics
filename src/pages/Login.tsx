@@ -1,123 +1,97 @@
 
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
-import gsap from "gsap";
+import Navbar from "@/components/layout/Navbar";
+import { FaGithub, FaGoogle } from "react-icons/fa";
 
-// Test credentials for demonstration
-const testUsers = [
-  { email: "student@example.com", password: "password", role: "student" },
-  { email: "teacher@example.com", password: "password", role: "teacher" },
-  { email: "admin@example.com", password: "password", role: "admin" }
-];
+// Test credentials for different roles
+const TEST_CREDENTIALS = {
+  student: { email: "student@example.com", password: "student123" },
+  teacher: { email: "teacher@example.com", password: "teacher123" },
+  admin: { email: "admin@example.com", password: "admin123" }
+};
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [rememberMe, setRememberMe] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
-  const formRef = useRef<HTMLDivElement>(null);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
 
-  useEffect(() => {
-    // GSAP animation for form
-    if (formRef.current) {
-      gsap.fromTo(
-        formRef.current,
-        { opacity: 0, y: 20 },
-        { 
-          opacity: 1, 
-          y: 0, 
-          duration: 0.7,
-          ease: "power2.out"
-        }
-      );
-    }
-  }, []);
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!email || !password) {
-      toast({
-        title: "Error",
-        description: "Please enter both email and password",
-        variant: "destructive",
-      });
-      return;
-    }
-    
     setIsLoading(true);
-    
-    // Simulate authentication
+
+    // Simulate login API call with a delay
     setTimeout(() => {
-      const user = testUsers.find(
-        (user) => user.email === email && user.password === password
-      );
-      
-      if (user) {
-        // Store user role and login status
-        localStorage.setItem("userRole", user.role);
+      // Check against test credentials
+      let userRole = null;
+
+      if (email === TEST_CREDENTIALS.student.email && password === TEST_CREDENTIALS.student.password) {
+        userRole = "student";
+      } else if (email === TEST_CREDENTIALS.teacher.email && password === TEST_CREDENTIALS.teacher.password) {
+        userRole = "teacher";
+      } else if (email === TEST_CREDENTIALS.admin.email && password === TEST_CREDENTIALS.admin.password) {
+        userRole = "admin";
+      }
+
+      if (userRole) {
+        // Store login state and role in localStorage
         localStorage.setItem("isLoggedIn", "true");
-        
+        localStorage.setItem("userRole", userRole);
+
         toast({
-          title: "Success",
-          description: "You have been logged in successfully",
+          title: "Login successful",
+          description: `Welcome back, ${userRole}!`,
         });
-        
+
         // Redirect based on role
-        switch (user.role) {
-          case "teacher":
-            navigate("/dashboard/teacher");
-            break;
-          case "admin":
-            navigate("/dashboard/admin");
-            break;
-          default:
-            navigate("/dashboard");
+        if (userRole === "admin") {
+          navigate("/dashboard/admin");
+        } else if (userRole === "teacher") {
+          navigate("/dashboard/teacher");
+        } else {
+          navigate("/dashboard");
         }
       } else {
         toast({
-          title: "Error",
-          description: "Invalid email or password",
+          title: "Login failed",
+          description: "Invalid email or password. Try our test accounts: student@example.com/student123, teacher@example.com/teacher123, or admin@example.com/admin123",
           variant: "destructive",
         });
       }
-      
+
       setIsLoading(false);
     }, 1000);
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-muted/30 p-4">
-      <div ref={formRef} className="w-full max-w-md">
-        <Card className="w-full">
-          <CardHeader className="space-y-1">
-            <div className="flex justify-center mb-4">
-              <Link to="/" className="flex items-center gap-2 font-bold text-2xl">
-                <span className="text-primary">Edu</span>
-                <span>Learn</span>
-              </Link>
-            </div>
-            <CardTitle className="text-2xl text-center">Welcome back</CardTitle>
-            <CardDescription className="text-center">
-              Enter your credentials to access your account
+    <>
+      <Navbar />
+      <div className="container flex items-center justify-center min-h-[calc(100vh-4rem)] py-10">
+        <Card className="mx-auto max-w-md w-full">
+          <CardHeader className="space-y-1 text-center">
+            <CardTitle className="text-2xl font-bold">Welcome back</CardTitle>
+            <CardDescription>
+              Login to your account to continue
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <form onSubmit={handleSubmit} className="space-y-4">
+          <CardContent>
+            <form onSubmit={handleLogin} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="m@example.com"
+                <Input 
+                  id="email" 
+                  type="email" 
+                  placeholder="your.email@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -126,15 +100,12 @@ const Login = () => {
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <Label htmlFor="password">Password</Label>
-                  <Link
-                    to="/forgot-password"
-                    className="text-xs text-primary hover:underline"
-                  >
+                  <Link to="/forgot-password" className="text-sm text-primary hover:underline">
                     Forgot password?
                   </Link>
                 </div>
-                <Input
-                  id="password"
+                <Input 
+                  id="password" 
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -142,54 +113,58 @@ const Login = () => {
                 />
               </div>
               <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="remember"
+                <Checkbox 
+                  id="remember-me" 
                   checked={rememberMe}
-                  onCheckedChange={(checked) => 
-                    setRememberMe(checked as boolean)
-                  }
+                  onCheckedChange={(checked) => setRememberMe(checked as boolean)}
                 />
-                <label
-                  htmlFor="remember"
-                  className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                >
-                  Remember me
-                </label>
+                <Label htmlFor="remember-me" className="text-sm">Remember me</Label>
               </div>
               <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? (
-                  <>
-                    <span className="animate-spin mr-2">⟳</span>
-                    Signing in...
-                  </>
-                ) : (
-                  "Sign in"
-                )}
+                {isLoading ? "Logging in..." : "Login"}
               </Button>
             </form>
-            
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t" />
-              </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-card px-2 text-muted-foreground">
-                  Or continue with
-                </span>
+
+            <div className="mt-4 text-center text-sm">
+              <p>Test accounts:</p>
+              <div className="grid grid-cols-1 gap-2 mt-2 text-xs bg-muted p-2 rounded-md">
+                <div>
+                  <p className="font-medium">Student:</p>
+                  <p className="text-muted-foreground">student@example.com / student123</p>
+                </div>
+                <div>
+                  <p className="font-medium">Teacher:</p>
+                  <p className="text-muted-foreground">teacher@example.com / teacher123</p>
+                </div>
+                <div>
+                  <p className="font-medium">Admin:</p>
+                  <p className="text-muted-foreground">admin@example.com / admin123</p>
+                </div>
               </div>
             </div>
-            
-            <div className="grid grid-cols-2 gap-4">
-              <Button variant="outline" type="button" className="w-full">
+
+            <div className="relative my-4">
+              <div className="absolute inset-0 flex items-center">
+                <Separator />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-card px-2 text-muted-foreground">Or continue with</span>
+              </div>
+            </div>
+
+            <div className="flex gap-2">
+              <Button variant="outline" className="w-full">
+                <FaGoogle className="mr-2 h-4 w-4" />
                 Google
               </Button>
-              <Button variant="outline" type="button" className="w-full">
-                Facebook
+              <Button variant="outline" className="w-full">
+                <FaGithub className="mr-2 h-4 w-4" />
+                GitHub
               </Button>
             </div>
           </CardContent>
-          <CardFooter className="justify-center">
-            <p className="text-sm text-center text-muted-foreground">
+          <CardFooter className="flex justify-center">
+            <p className="text-sm text-muted-foreground">
               Don't have an account?{" "}
               <Link to="/signup" className="text-primary hover:underline">
                 Sign up
@@ -197,14 +172,8 @@ const Login = () => {
             </p>
           </CardFooter>
         </Card>
-        
-        <div className="text-center mt-4">
-          <Link to="/" className="text-sm text-muted-foreground hover:underline">
-            ← Back to home
-          </Link>
-        </div>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -33,7 +33,6 @@ import {
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
 import gsap from 'gsap';
 
-// Mock admin dashboard data
 const adminData = {
   stats: {
     totalUsers: 2485,
@@ -179,7 +178,6 @@ const adminData = {
   ]
 };
 
-// Mock users for management
 const mockStudents = [
   {
     id: "s1",
@@ -288,7 +286,6 @@ const AdminDashboard = () => {
   });
 
   useEffect(() => {
-    // GSAP animations
     if (statsRef.current) {
       gsap.fromTo(
         statsRef.current.children,
@@ -414,7 +411,6 @@ const AdminDashboard = () => {
           
           <TabsContent value="overview" className="space-y-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" ref={statsRef}>
-              
               <Card>
                 <CardHeader className="py-4">
                   <CardTitle className="text-sm font-medium">Total Users</CardTitle>
@@ -426,7 +422,6 @@ const AdminDashboard = () => {
                   </div>
                 </CardContent>
               </Card>
-              
               
               <Card>
                 <CardHeader className="py-4">
@@ -440,7 +435,6 @@ const AdminDashboard = () => {
                 </CardContent>
               </Card>
               
-              
               <Card>
                 <CardHeader className="py-4">
                   <CardTitle className="text-sm font-medium">Total Courses</CardTitle>
@@ -452,7 +446,6 @@ const AdminDashboard = () => {
                   </div>
                 </CardContent>
               </Card>
-              
               
               <Card>
                 <CardHeader className="py-4">
@@ -468,7 +461,6 @@ const AdminDashboard = () => {
             </div>
             
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6" ref={chartsRef}>
-              
               <Card className="lg:col-span-2">
                 <CardHeader className="flex flex-row items-center justify-between">
                   <div>
@@ -488,7 +480,6 @@ const AdminDashboard = () => {
                   </div>
                 </CardContent>
               </Card>
-              
               
               <Card>
                 <CardHeader>
@@ -538,7 +529,6 @@ const AdminDashboard = () => {
             </div>
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              
               <Card>
                 <CardHeader>
                   <div className="flex items-center justify-between">
@@ -592,7 +582,6 @@ const AdminDashboard = () => {
                 </CardContent>
               </Card>
               
-              
               <Card>
                 <CardHeader>
                   <div className="flex items-center justify-between">
@@ -639,7 +628,6 @@ const AdminDashboard = () => {
             </div>
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              
               <Card>
                 <CardHeader>
                   <div className="flex items-center justify-between">
@@ -681,7 +669,6 @@ const AdminDashboard = () => {
                 </CardContent>
               </Card>
               
-              
               <div className="space-y-6">
                 <Card>
                   <CardHeader>
@@ -717,131 +704,5 @@ const AdminDashboard = () => {
                   </CardContent>
                 </Card>
                 
-                
-                <Card>
-                  <CardHeader>
-                    <div className="flex items-center justify-between">
-                      <CardTitle>Support Tickets</CardTitle>
-                      <Button variant="outline" size="sm" asChild>
-                        <Link to="/dashboard/admin/support">View All</Link>
-                      </Button>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-4">
-                      {adminData.recentTickets.map((ticket) => (
-                        <div key={ticket.id} className="flex items-center justify-between pb-4 border-b last:border-0 last:pb-0">
-                          <div>
-                            <div className="flex items-center gap-2">
-                              <p className="font-medium">{ticket.user}</p>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${
-                                ticket.status === "open" 
-                                  ? "bg-green-100 text-green-800" 
-                                  : "bg-gray-100 text-gray-800"
-                              }`}>
-                                {ticket.status}
-                              </span>
-                            </div>
-                            <p className="text-sm text-muted-foreground mt-1">{ticket.subject}</p>
-                            <p className="text-xs text-muted-foreground mt-1">{ticket.date}</p>
-                          </div>
-                          <Button size="sm" variant="outline" className="gap-1">
-                            <MessageSquare className="h-4 w-4" />
-                            Reply
-                          </Button>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            </div>
-          </TabsContent>
-          
-          <TabsContent value="users" className="space-y-6">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
-              <div>
-                <h2 className="text-2xl font-bold">User Management</h2>
-                <p className="text-muted-foreground">Manage students and teachers on the platform</p>
-              </div>
-              
-              <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
-                <div className="relative">
-                  <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    type="search"
-                    placeholder="Search users..."
-                    className="pl-8 w-full sm:w-[240px]"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                  />
-                </div>
-                
-                <Select value={selectedRole} onValueChange={setSelectedRole}>
-                  <SelectTrigger className="w-full sm:w-[120px]">
-                    <SelectValue placeholder="Select role" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="student">Students</SelectItem>
-                    <SelectItem value="teacher">Teachers</SelectItem>
-                  </SelectContent>
-                </Select>
-                
-                <Dialog open={isAddUserDialogOpen} onOpenChange={setIsAddUserDialogOpen}>
-                  <DialogTrigger asChild>
-                    <Button className="gap-2 whitespace-nowrap">
-                      <UserPlus className="h-4 w-4" />
-                      Add User
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>Add New User</DialogTitle>
-                      <DialogDescription>
-                        Create a new user account for the platform.
-                      </DialogDescription>
-                    </DialogHeader>
-                    <div className="space-y-4 py-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="name">Full Name</Label>
-                        <Input 
-                          id="name" 
-                          value={newUser.name}
-                          onChange={(e) => setNewUser({...newUser, name: e.target.value})}
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="email">Email</Label>
-                        <Input 
-                          id="email" 
-                          type="email"
-                          value={newUser.email}
-                          onChange={(e) => setNewUser({...newUser, email: e.target.value})}
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="password">Password</Label>
-                        <Input 
-                          id="password" 
-                          type="password"
-                          value={newUser.password}
-                          onChange={(e) => setNewUser({...newUser, password: e.target.value})}
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="role">Role</Label>
-                        <Select 
-                          value={newUser.role} 
-                          onValueChange={(value) => setNewUser({...newUser, role: value})}
-                        >
-                          <SelectTrigger id="role">
-                            <SelectValue placeholder="Select role" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="student">Student</SelectItem>
-                            <SelectItem value="teacher">Teacher</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                    </div>
-                    <DialogFooter>
+
+
