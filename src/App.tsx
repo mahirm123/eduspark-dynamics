@@ -8,10 +8,14 @@ import { useEffect } from "react";
 import Index from "./pages/Index";
 import Courses from "./pages/Courses";
 import CourseDetail from "./pages/CourseDetail";
+import CourseLearning from "./pages/CourseLearning";
 import Teachers from "./pages/Teachers";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
+import StudentDashboard from "./pages/dashboard/StudentDashboard";
+import TeacherDashboard from "./pages/dashboard/TeacherDashboard";
+import AdminDashboard from "./pages/dashboard/AdminDashboard";
 import NotFound from "./pages/NotFound";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -71,11 +75,40 @@ const App = () => {
             <Route path="/" element={<Index />} />
             <Route path="/courses" element={<Courses />} />
             <Route path="/courses/:id" element={<CourseDetail />} />
+            <Route path="/courses/:id/learn" element={<CourseLearning />} />
             <Route path="/teachers" element={<Teachers />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            
+            {/* Dashboard Routes */}
+            <Route path="/dashboard" element={<StudentDashboard />} />
+            
+            {/* Student Dashboard Routes */}
+            <Route path="/dashboard/courses" element={<StudentDashboard />} />
+            <Route path="/dashboard/schedule" element={<StudentDashboard />} />
+            <Route path="/dashboard/messages" element={<StudentDashboard />} />
+            <Route path="/dashboard/achievements" element={<StudentDashboard />} />
+            <Route path="/dashboard/settings" element={<StudentDashboard />} />
+            <Route path="/dashboard/help" element={<StudentDashboard />} />
+            
+            {/* Teacher Dashboard Routes */}
+            <Route path="/dashboard/teacher" element={<TeacherDashboard />} />
+            <Route path="/dashboard/teacher/courses" element={<TeacherDashboard />} />
+            <Route path="/dashboard/teacher/students" element={<TeacherDashboard />} />
+            <Route path="/dashboard/teacher/schedule" element={<TeacherDashboard />} />
+            <Route path="/dashboard/teacher/messages" element={<TeacherDashboard />} />
+            <Route path="/dashboard/teacher/upload" element={<TeacherDashboard />} />
+            
+            {/* Admin Dashboard Routes */}
+            <Route path="/dashboard/admin" element={<AdminDashboard />} />
+            <Route path="/dashboard/admin/users" element={<AdminDashboard />} />
+            <Route path="/dashboard/admin/courses" element={<AdminDashboard />} />
+            <Route path="/dashboard/admin/reports" element={<AdminDashboard />} />
+            <Route path="/dashboard/admin/notifications" element={<AdminDashboard />} />
+            <Route path="/dashboard/admin/payments" element={<AdminDashboard />} />
+            <Route path="/dashboard/admin/support" element={<AdminDashboard />} />
+            
+            {/* Catch-all route */}
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
