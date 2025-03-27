@@ -10,6 +10,11 @@ router.post('/register', async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
     
+    // Check required fields
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: 'Please provide all required fields' });
+    }
+    
     // Check if user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -53,6 +58,11 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
+    
+    // Check required fields
+    if (!email || !password) {
+      return res.status(400).json({ message: 'Please provide email and password' });
+    }
     
     // Find user by email
     const user = await User.findOne({ email });
@@ -156,17 +166,60 @@ router.put('/:id', auth, async (req, res) => {
     if (department) updateData.department = department;
     if (bio) updateData.bio = bio;
     
-    const user = await User.findByIdAndUpdate(
-      req.params.id,
-      { $set: updateData },
-      { new: true }
-    ).select('-password');
+    // If updating password, it will be hashed via the pre-save middleware
+    const user = password
+      ? await User.findById(req.params.id)
+      : await User.findByIdAndUpdate(
+          req.params.id,
+          { $set: updateData },
+          { new: true }
+        ).select('-password');
     
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
     
-    res.json(user);
+    // If updating password, set other fields and save to trigger pre-save middleware
+    if (password) {
+      if (name) user.name = name;
+      if (email) user.email = email;
+      if (avatar) user.avatar = avatar;
+      if (department) user.department = department;
+      if (bio) user.bio = bio;
+      user.password = password;
+      await user.save();
+    }
+    
+    res.json({
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      avatar: user.avatar,
+      department: user.department,
+      bio: user.bio,
+      lastActive: user.lastActive
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+});
+
+// Delete user (admin only)
+router.delete('/:id', auth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin') {
+      return res.status(403).json({ message: 'Not authorized' });
+    }
+    
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    
+    await user.deleteOne();
+    res.json({ message: 'User deleted successfully' });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Server error', error: error.message });

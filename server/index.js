@@ -18,7 +18,10 @@ app.use(cors());
 app.use(express.json());
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/edulearn')
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/edulearn', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.error('MongoDB connection error:', err));
 
@@ -29,6 +32,12 @@ app.use('/api/users', userRoutes);
 // Root route
 app.get('/', (req, res) => {
   res.json({ message: 'EduLearn API is running' });
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ message: 'Something went wrong!', error: err.message });
 });
 
 // Start server
