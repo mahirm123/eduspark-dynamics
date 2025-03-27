@@ -1,3 +1,4 @@
+
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -704,5 +705,257 @@ const AdminDashboard = () => {
                   </CardContent>
                 </Card>
                 
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Recent Support Tickets</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      {adminData.recentTickets.map((ticket) => (
+                        <div key={ticket.id} className="flex items-center justify-between pb-4 border-b last:border-0 last:pb-0">
+                          <div>
+                            <p className="font-medium">{ticket.user}</p>
+                            <p className="text-sm text-muted-foreground">{ticket.subject}</p>
+                            <p className="text-xs text-muted-foreground mt-1">{ticket.date}</p>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className={`text-xs px-2 py-1 rounded-full ${
+                              ticket.status === "open" 
+                                ? "bg-blue-100 text-blue-800" 
+                                : "bg-gray-100 text-gray-800"
+                            }`}>
+                              {ticket.status.charAt(0).toUpperCase() + ticket.status.slice(1)}
+                            </span>
+                            <Button variant="ghost" size="icon">
+                              <MessageSquare className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          </TabsContent>
+          
+          <TabsContent value="users" className="space-y-6">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+              <div>
+                <h2 className="text-2xl font-bold">User Management</h2>
+                <p className="text-muted-foreground">Manage all users on the platform</p>
+              </div>
+              <div className="flex gap-2">
+                <Dialog open={isAddUserDialogOpen} onOpenChange={setIsAddUserDialogOpen}>
+                  <DialogTrigger asChild>
+                    <Button className="gap-2">
+                      <UserPlus className="h-4 w-4" />
+                      Add New User
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Add New User</DialogTitle>
+                      <DialogDescription>
+                        Create a new user account for the platform.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <div className="space-y-4 py-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="name">Full Name</Label>
+                        <Input 
+                          id="name" 
+                          value={newUser.name} 
+                          onChange={(e) => setNewUser({...newUser, name: e.target.value})} 
+                          placeholder="John Doe"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="email">Email</Label>
+                        <Input 
+                          id="email" 
+                          type="email" 
+                          value={newUser.email} 
+                          onChange={(e) => setNewUser({...newUser, email: e.target.value})} 
+                          placeholder="john.doe@example.com"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="password">Password</Label>
+                        <Input 
+                          id="password" 
+                          type="password" 
+                          value={newUser.password} 
+                          onChange={(e) => setNewUser({...newUser, password: e.target.value})} 
+                          placeholder="••••••••"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="role">Role</Label>
+                        <Select 
+                          value={newUser.role} 
+                          onValueChange={(value) => setNewUser({...newUser, role: value})}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select a role" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="student">Student</SelectItem>
+                            <SelectItem value="teacher">Teacher</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                    <DialogFooter>
+                      <Button variant="outline" onClick={() => setIsAddUserDialogOpen(false)}>
+                        Cancel
+                      </Button>
+                      <Button onClick={handleAddUser}>Add User</Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
+              </div>
+            </div>
+            
+            <div className="space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="relative">
+                  <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    placeholder="Search users..."
+                    className="pl-9 w-full sm:w-[300px]"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                </div>
+                <div className="flex gap-2">
+                  <Select value={selectedRole} onValueChange={setSelectedRole}>
+                    <SelectTrigger className="w-[130px]">
+                      <SelectValue placeholder="Select role" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="student">Students</SelectItem>
+                      <SelectItem value="teacher">Teachers</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              
+              {selectedRole === "student" ? (
+                <div className="border rounded-md divide-y">
+                  {filteredStudents.length > 0 ? (
+                    filteredStudents.map((student) => (
+                      <div key={student.id} className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div className="flex items-center gap-3">
+                          <Avatar>
+                            <AvatarImage src={student.avatar} />
+                            <AvatarFallback>{student.name[0]}</AvatarFallback>
+                          </Avatar>
+                          <div>
+                            <p className="font-medium">{student.name}</p>
+                            <p className="text-sm text-muted-foreground">{student.email}</p>
+                            <div className="flex items-center gap-3 mt-1 text-xs text-muted-foreground">
+                              <span>Joined: {student.joinDate}</span>
+                              <span>Courses: {student.coursesEnrolled}</span>
+                              <span>Last active: {student.lastActive}</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex gap-2 mt-2 sm:mt-0">
+                          <Button size="sm" variant="outline">
+                            <Edit className="h-4 w-4 mr-1" />
+                            Edit
+                          </Button>
+                          <Button size="sm" variant="destructive" onClick={() => handleDeleteUser(student.id, "student")}>
+                            <Trash2 className="h-4 w-4 mr-1" />
+                            Delete
+                          </Button>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="p-8 text-center">
+                      <p className="text-muted-foreground">No students found matching your search.</p>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="border rounded-md divide-y">
+                  {filteredTeachers.length > 0 ? (
+                    filteredTeachers.map((teacher) => (
+                      <div key={teacher.id} className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div className="flex items-center gap-3">
+                          <Avatar>
+                            <AvatarImage src={teacher.avatar} />
+                            <AvatarFallback>{teacher.name[0]}</AvatarFallback>
+                          </Avatar>
+                          <div>
+                            <p className="font-medium">{teacher.name}</p>
+                            <p className="text-sm text-muted-foreground">{teacher.email}</p>
+                            <div className="flex items-center gap-3 mt-1 text-xs text-muted-foreground">
+                              <span>Joined: {teacher.joinDate}</span>
+                              <span>Department: {teacher.department}</span>
+                              <span>Rating: {teacher.rating}/5</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex gap-2 mt-2 sm:mt-0">
+                          <Button size="sm" variant="outline">
+                            <Edit className="h-4 w-4 mr-1" />
+                            Edit
+                          </Button>
+                          <Button size="sm" variant="destructive" onClick={() => handleDeleteUser(teacher.id, "teacher")}>
+                            <Trash2 className="h-4 w-4 mr-1" />
+                            Delete
+                          </Button>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="p-8 text-center">
+                      <p className="text-muted-foreground">No teachers found matching your search.</p>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          </TabsContent>
+          
+          <TabsContent value="courses">
+            <div className="flex flex-col gap-6">
+              <div>
+                <h2 className="text-2xl font-bold">Course Management</h2>
+                <p className="text-muted-foreground">Manage all courses on the platform</p>
+              </div>
+              <div className="flex items-center justify-center p-12 border rounded-md">
+                <div className="text-center">
+                  <BookMarked className="h-16 w-16 text-muted-foreground/50 mx-auto mb-4" />
+                  <h3 className="text-lg font-medium mb-2">Course Management Coming Soon</h3>
+                  <p className="text-muted-foreground max-w-md mx-auto">This section is under development. Check back later for full course management functionality.</p>
+                </div>
+              </div>
+            </div>
+          </TabsContent>
+          
+          <TabsContent value="reports">
+            <div className="flex flex-col gap-6">
+              <div>
+                <h2 className="text-2xl font-bold">Reports</h2>
+                <p className="text-muted-foreground">View and generate platform reports</p>
+              </div>
+              <div className="flex items-center justify-center p-12 border rounded-md">
+                <div className="text-center">
+                  <BarChart3 className="h-16 w-16 text-muted-foreground/50 mx-auto mb-4" />
+                  <h3 className="text-lg font-medium mb-2">Reports Coming Soon</h3>
+                  <p className="text-muted-foreground max-w-md mx-auto">This section is under development. Check back later for comprehensive reporting functionality.</p>
+                </div>
+              </div>
+            </div>
+          </TabsContent>
+        </Tabs>
+      </div>
+    </DashboardLayout>
+  );
+};
 
-
+export default AdminDashboard;
