@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -38,6 +37,7 @@ import AdminCourses from "./pages/dashboard/admin/Courses";
 import AdminReports from "./pages/dashboard/admin/Reports";
 import AdminPayments from "./pages/dashboard/admin/Payments";
 import AdminSupport from "./pages/dashboard/admin/Support";
+import AdminNotifications from "./pages/dashboard/admin/Notifications";
 
 import NotFound from "./pages/NotFound";
 import gsap from "gsap";
@@ -107,7 +107,7 @@ const App = () => {
             <Route path="/dashboard" element={<Dashboard />} />
             
             {/* Student Dashboard Routes */}
-            <Route path="/dashboard" element={<StudentDashboard />} />
+            <Route path="/dashboard/student" element={<StudentDashboard />} />
             <Route path="/dashboard/courses" element={<StudentCourses />} />
             <Route path="/dashboard/schedule" element={<StudentSchedule />} />
             <Route path="/dashboard/messages" element={<StudentMessages />} />
@@ -130,6 +130,7 @@ const App = () => {
             <Route path="/dashboard/admin/reports" element={<AdminReports />} />
             <Route path="/dashboard/admin/payments" element={<AdminPayments />} />
             <Route path="/dashboard/admin/support" element={<AdminSupport />} />
+            <Route path="/dashboard/admin/notifications" element={<AdminNotifications />} />
             
             {/* Catch-all route */}
             <Route path="*" element={<NotFound />} />
