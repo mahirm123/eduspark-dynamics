@@ -5,7 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Search, MessageSquare, CheckCircle2, XCircle, AlertTriangle } from "lucide-react";
+import { Search, MessageSquare, CheckCircle2, XCircle, AlertTriangle, Clock } from "lucide-react";
 import { useState } from "react";
 
 // Mock support tickets data
