@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -43,6 +44,7 @@ import NotFound from "./pages/NotFound";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
+import { ThemeProvider } from "./components/theme/ThemeProvider";
 
 // Register GSAP plugins
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
@@ -90,53 +92,55 @@ const App = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/courses" element={<Courses />} />
-            <Route path="/courses/:id" element={<CourseDetail />} />
-            <Route path="/courses/:id/learn" element={<CourseLearning />} />
-            <Route path="/teachers" element={<Teachers />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            
-            {/* Main Dashboard Route */}
-            <Route path="/dashboard" element={<Dashboard />} />
-            
-            {/* Student Dashboard Routes */}
-            <Route path="/dashboard/student" element={<StudentDashboard />} />
-            <Route path="/dashboard/courses" element={<StudentCourses />} />
-            <Route path="/dashboard/schedule" element={<StudentSchedule />} />
-            <Route path="/dashboard/messages" element={<StudentMessages />} />
-            <Route path="/dashboard/achievements" element={<StudentAchievements />} />
-            <Route path="/dashboard/settings" element={<StudentSettings />} />
-            <Route path="/dashboard/help" element={<StudentHelp />} />
-            
-            {/* Teacher Dashboard Routes */}
-            <Route path="/dashboard/teacher" element={<TeacherDashboard />} />
-            <Route path="/dashboard/teacher/courses" element={<TeacherCourses />} />
-            <Route path="/dashboard/teacher/students" element={<TeacherStudents />} />
-            <Route path="/dashboard/teacher/schedule" element={<TeacherSchedule />} />
-            <Route path="/dashboard/teacher/messages" element={<TeacherMessages />} />
-            <Route path="/dashboard/teacher/upload" element={<TeacherUpload />} />
-            
-            {/* Admin Dashboard Routes */}
-            <Route path="/dashboard/admin" element={<AdminDashboard />} />
-            <Route path="/dashboard/admin/users" element={<AdminUsers />} />
-            <Route path="/dashboard/admin/courses" element={<AdminCourses />} />
-            <Route path="/dashboard/admin/reports" element={<AdminReports />} />
-            <Route path="/dashboard/admin/payments" element={<AdminPayments />} />
-            <Route path="/dashboard/admin/support" element={<AdminSupport />} />
-            <Route path="/dashboard/admin/notifications" element={<AdminNotifications />} />
-            
-            {/* Catch-all route */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
+      <ThemeProvider defaultTheme="light">
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/courses" element={<Courses />} />
+              <Route path="/courses/:id" element={<CourseDetail />} />
+              <Route path="/courses/:id/learn" element={<CourseLearning />} />
+              <Route path="/teachers" element={<Teachers />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+              
+              {/* Main Dashboard Route */}
+              <Route path="/dashboard" element={<Dashboard />} />
+              
+              {/* Student Dashboard Routes */}
+              <Route path="/dashboard/student" element={<StudentDashboard />} />
+              <Route path="/dashboard/courses" element={<StudentCourses />} />
+              <Route path="/dashboard/schedule" element={<StudentSchedule />} />
+              <Route path="/dashboard/messages" element={<StudentMessages />} />
+              <Route path="/dashboard/achievements" element={<StudentAchievements />} />
+              <Route path="/dashboard/settings" element={<StudentSettings />} />
+              <Route path="/dashboard/help" element={<StudentHelp />} />
+              
+              {/* Teacher Dashboard Routes */}
+              <Route path="/dashboard/teacher" element={<TeacherDashboard />} />
+              <Route path="/dashboard/teacher/courses" element={<TeacherCourses />} />
+              <Route path="/dashboard/teacher/students" element={<TeacherStudents />} />
+              <Route path="/dashboard/teacher/schedule" element={<TeacherSchedule />} />
+              <Route path="/dashboard/teacher/messages" element={<TeacherMessages />} />
+              <Route path="/dashboard/teacher/upload" element={<TeacherUpload />} />
+              
+              {/* Admin Dashboard Routes */}
+              <Route path="/dashboard/admin" element={<AdminDashboard />} />
+              <Route path="/dashboard/admin/users" element={<AdminUsers />} />
+              <Route path="/dashboard/admin/courses" element={<AdminCourses />} />
+              <Route path="/dashboard/admin/reports" element={<AdminReports />} />
+              <Route path="/dashboard/admin/payments" element={<AdminPayments />} />
+              <Route path="/dashboard/admin/support" element={<AdminSupport />} />
+              <Route path="/dashboard/admin/notifications" element={<AdminNotifications />} />
+              
+              {/* Catch-all route */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </TooltipProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 };

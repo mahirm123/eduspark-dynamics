@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import { useEffect, useState } from "react";
 import gsap from "gsap";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -93,6 +94,10 @@ const Navbar = () => {
               </Link>
             </>
           )}
+          
+          <div className="ml-2 nav-item">
+            <ThemeToggle />
+          </div>
         </div>
       </div>
     </nav>
