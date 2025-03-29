@@ -1,6 +1,13 @@
 
 import { Code, LineChart, PenTool, BookOpen, Columns, Camera, Users, Megaphone } from "lucide-react";
 import { Link } from "react-router-dom";
+import { 
+  Carousel, 
+  CarouselContent, 
+  CarouselItem, 
+  CarouselNext, 
+  CarouselPrevious 
+} from "@/components/ui/carousel";
 
 const categories = [
   {
@@ -74,25 +81,39 @@ const Categories = () => {
             the right one for you
           </p>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-          {categories.map((category) => (
-            <Link
-              to={category.link}
-              key={category.name}
-              className="flex flex-col items-center p-6 bg-background rounded-lg shadow-sm border border-border hover:shadow-md transition-shadow"
-            >
-              <div
-                className={`p-3 rounded-full ${category.color} mb-4`}
-              >
-                <category.icon className="h-6 w-6" />
-              </div>
-              <h3 className="font-medium text-center">{category.name}</h3>
-              <p className="text-sm text-muted-foreground mt-1">
-                {category.courses} courses
-              </p>
-            </Link>
-          ))}
-        </div>
+        
+        <Carousel
+          opts={{
+            align: "start",
+            loop: true,
+          }}
+          className="w-full"
+        >
+          <CarouselContent className="-ml-2 md:-ml-4">
+            {categories.map((category) => (
+              <CarouselItem key={category.name} className="pl-2 md:pl-4 md:basis-1/4 lg:basis-1/4">
+                <Link
+                  to={category.link}
+                  className="flex flex-col items-center p-6 bg-background rounded-lg shadow-sm border border-border hover:shadow-md transition-shadow h-full"
+                >
+                  <div
+                    className={`p-3 rounded-full ${category.color} mb-4`}
+                  >
+                    <category.icon className="h-6 w-6" />
+                  </div>
+                  <h3 className="font-medium text-center">{category.name}</h3>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    {category.courses} courses
+                  </p>
+                </Link>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <div className="flex justify-center mt-6">
+            <CarouselPrevious className="relative static mx-2 left-0 translate-y-0" />
+            <CarouselNext className="relative static mx-2 right-0 translate-y-0" />
+          </div>
+        </Carousel>
       </div>
     </section>
   );

@@ -11,6 +11,13 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Star, Users } from "lucide-react";
 import { Link } from "react-router-dom";
+import { 
+  Carousel, 
+  CarouselContent, 
+  CarouselItem, 
+  CarouselNext, 
+  CarouselPrevious 
+} from "@/components/ui/carousel";
 
 const featuredCourses = [
   {
@@ -48,6 +55,30 @@ const featuredCourses = [
     category: "Marketing",
     level: "All Levels",
     image: "https://images.unsplash.com/photo-1533750349088-cd871a92f312?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+  },
+  {
+    id: 4,
+    title: "UX/UI Design Fundamentals",
+    description: "Learn to create beautiful user interfaces and experiences",
+    instructor: "Alex Wong",
+    price: "$84.99",
+    rating: 4.9,
+    students: 7850,
+    category: "Design",
+    level: "Beginner",
+    image: "https://images.unsplash.com/photo-1541462608143-67571c6738dd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+  },
+  {
+    id: 5,
+    title: "Mobile App Development with React Native",
+    description: "Build native mobile apps for iOS and Android",
+    instructor: "Jessica Kim",
+    price: "$99.99",
+    rating: 4.8,
+    students: 6320,
+    category: "Development",
+    level: "Intermediate",
+    image: "https://images.unsplash.com/photo-1558655146-d09347e92766?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
   },
 ];
 
@@ -119,11 +150,26 @@ const FeaturedCourses = () => {
             <Button variant="outline">View All Courses</Button>
           </Link>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {featuredCourses.map((course) => (
-            <CourseCard key={course.id} course={course} />
-          ))}
-        </div>
+        
+        <Carousel
+          opts={{
+            align: "start",
+            loop: true,
+          }}
+          className="w-full"
+        >
+          <CarouselContent className="-ml-2 md:-ml-4">
+            {featuredCourses.map((course) => (
+              <CarouselItem key={course.id} className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3">
+                <CourseCard course={course} />
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <div className="flex justify-center mt-6">
+            <CarouselPrevious className="relative static mx-2 left-0 translate-y-0" />
+            <CarouselNext className="relative static mx-2 right-0 translate-y-0" />
+          </div>
+        </Carousel>
       </div>
     </section>
   );
