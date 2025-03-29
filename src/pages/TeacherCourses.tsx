@@ -17,7 +17,7 @@ import { Teacher } from "@/components/teachers/TeacherCard";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import gsap from "gsap";
 
-// Mock courses data
+// Mock courses data with correct type properties
 const mockCourses = [
   {
     id: "1",
@@ -26,8 +26,8 @@ const mockCourses = [
     instructor: "John Smith",
     price: 89.99,
     rating: 4.9,
-    reviewCount: 1234,
-    students: 8745,
+    reviewsCount: 1234, // Changed from reviewCount
+    studentsCount: 8745, // Changed from students
     level: "All Levels",
     category: "Development",
     duration: "48 hours",
@@ -43,8 +43,8 @@ const mockCourses = [
     instructor: "John Smith",
     price: 69.99,
     rating: 4.8,
-    reviewCount: 876,
-    students: 5432,
+    reviewsCount: 876, // Changed from reviewCount
+    studentsCount: 5432, // Changed from students
     level: "Beginner to Advanced",
     category: "Development",
     duration: "36 hours",
@@ -60,8 +60,8 @@ const mockCourses = [
     instructor: "John Smith",
     price: 79.99,
     rating: 4.9,
-    reviewCount: 1021,
-    students: 6789,
+    reviewsCount: 1021, // Changed from reviewCount
+    studentsCount: 6789, // Changed from students
     level: "Intermediate",
     category: "Development",
     duration: "42 hours",
@@ -77,8 +77,8 @@ const mockCourses = [
     instructor: "John Smith",
     price: 84.99,
     rating: 4.7,
-    reviewCount: 743,
-    students: 4321,
+    reviewsCount: 743, // Changed from reviewCount
+    studentsCount: 4321, // Changed from students
     level: "Intermediate",
     category: "Development",
     duration: "38 hours",
@@ -94,8 +94,8 @@ const mockCourses = [
     instructor: "John Smith",
     price: 74.99,
     rating: 4.8,
-    reviewCount: 654,
-    students: 3987,
+    reviewsCount: 654, // Changed from reviewCount
+    studentsCount: 3987, // Changed from students
     level: "Advanced",
     category: "Development",
     duration: "28 hours",
@@ -111,8 +111,8 @@ const mockCourses = [
     instructor: "John Smith",
     price: 89.99,
     rating: 4.9,
-    reviewCount: 512,
-    students: 2876,
+    reviewsCount: 512, // Changed from reviewCount
+    studentsCount: 2876, // Changed from students
     level: "Intermediate to Advanced",
     category: "Development",
     duration: "32 hours",

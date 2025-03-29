@@ -33,7 +33,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import gsap from "gsap";
 
-// Mock courses data
+// Mock courses data with correct type properties
 const mockCourses = [
   {
     id: "1",
@@ -42,8 +42,8 @@ const mockCourses = [
     instructor: "John Smith",
     price: 89.99,
     rating: 4.9,
-    reviewCount: 1234,
-    students: 8745,
+    reviewsCount: 1234, // Changed from reviewCount
+    studentsCount: 8745, // Changed from students
     level: "All Levels",
     category: "Development",
     duration: "48 hours",
@@ -59,8 +59,8 @@ const mockCourses = [
     instructor: "John Smith",
     price: 69.99,
     rating: 4.8,
-    reviewCount: 876,
-    students: 5432,
+    reviewsCount: 876, // Changed from reviewCount
+    studentsCount: 5432, // Changed from students
     level: "Beginner to Advanced",
     category: "Development",
     duration: "36 hours",
@@ -76,8 +76,8 @@ const mockCourses = [
     instructor: "John Smith",
     price: 79.99,
     rating: 4.9,
-    reviewCount: 1021,
-    students: 6789,
+    reviewsCount: 1021, // Changed from reviewCount
+    studentsCount: 6789, // Changed from students
     level: "Intermediate",
     category: "Development",
     duration: "42 hours",

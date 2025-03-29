@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -23,6 +24,18 @@ import StudentSettings from "./pages/dashboard/student/Settings";
 import StudentHelp from "./pages/dashboard/student/Help";
 import TeacherProfile from "./pages/TeacherProfile";
 import TeacherCourses from "./pages/TeacherCourses";
+// Import existing teacher pages
+import TeacherStudents from "./pages/dashboard/teacher/Students";
+import TeacherSchedule from "./pages/dashboard/teacher/Schedule";
+import TeacherMessages from "./pages/dashboard/teacher/Messages";
+import TeacherUpload from "./pages/dashboard/teacher/Upload";
+// Import admin dashboard components
+import AdminUsers from "./pages/dashboard/admin/Users";
+import AdminCourses from "./pages/dashboard/admin/Courses";
+import AdminReports from "./pages/dashboard/admin/Reports";
+import AdminPayments from "./pages/dashboard/admin/Payments";
+import AdminSupport from "./pages/dashboard/admin/Support";
+import AdminNotifications from "./pages/dashboard/admin/Notifications";
 import NotFound from "./pages/NotFound";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
