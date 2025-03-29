@@ -2,7 +2,7 @@
 import { Link } from "react-router-dom";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { PlayCircle, Users, Star } from "lucide-react";
+import { Star, Users } from "lucide-react";
 import { useRef } from "react";
 
 export interface Teacher {
