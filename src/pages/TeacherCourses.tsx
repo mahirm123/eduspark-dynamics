@@ -80,10 +80,6 @@ const TeacherCourses = () => {
     setFilteredCourses(result);
   }, [searchTerm, sortOption, courses]);
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-  };
-
   if (loading) {
     return (
       <div className="min-h-screen flex flex-col">

@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import Navbar from "@/components/layout/Navbar";
@@ -32,92 +31,31 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import gsap from "gsap";
-
-// Mock courses data with correct type properties
-const mockCourses = [
-  {
-    id: "1",
-    title: "Complete Web Development Bootcamp",
-    description: "Learn HTML, CSS, JavaScript, React, Node.js, and more to become a full-stack web developer",
-    instructor: "John Smith",
-    price: 89.99,
-    rating: 4.9,
-    reviewsCount: 1234, // Changed from reviewCount
-    studentsCount: 8745, // Changed from students
-    level: "All Levels",
-    category: "Development",
-    duration: "48 hours",
-    lastUpdated: "April 2023",
-    image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
-    language: "English",
-    bestseller: true
-  },
-  {
-    id: "2",
-    title: "JavaScript: From Fundamentals to Advanced",
-    description: "Master JavaScript with practical exercises and real-world projects",
-    instructor: "John Smith",
-    price: 69.99,
-    rating: 4.8,
-    reviewsCount: 876, // Changed from reviewCount
-    studentsCount: 5432, // Changed from students
-    level: "Beginner to Advanced",
-    category: "Development",
-    duration: "36 hours",
-    lastUpdated: "June 2023",
-    image: "https://images.unsplash.com/photo-1627398242454-45a1465c2479?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80",
-    language: "English",
-    bestseller: false
-  },
-  {
-    id: "3",
-    title: "Modern React with Redux and Hooks",
-    description: "Learn to build powerful web applications with React, Redux, and modern JavaScript",
-    instructor: "John Smith",
-    price: 79.99,
-    rating: 4.9,
-    reviewsCount: 1021, // Changed from reviewCount
-    studentsCount: 6789, // Changed from students
-    level: "Intermediate",
-    category: "Development",
-    duration: "42 hours",
-    lastUpdated: "August 2023",
-    image: "https://images.unsplash.com/photo-1633356122102-3fe601e05bd2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
-    language: "English",
-    bestseller: true
-  }
-];
+import { teacherAPI } from "@/services/api";
 
 const TeacherProfile = () => {
   const { id } = useParams<{ id: string }>();
   const [teacher, setTeacher] = useState<Teacher | null>(null);
-  const [courses, setCourses] = useState(mockCourses);
+  const [courses, setCourses] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // In a real app, this would be an API call to fetch teacher data
-    const fetchTeacher = async () => {
+    const fetchTeacherData = async () => {
       setLoading(true);
       try {
-        // Simulating API fetch with setTimeout
-        setTimeout(() => {
-          // Find teacher from the hooks/useTeachers.tsx mock data
-          import("@/hooks/useTeachers").then(({ useTeachers }) => {
-            const { teachers } = useTeachers();
-            const foundTeacher = teachers.find(t => t.id === id);
-            if (foundTeacher) {
-              setTeacher(foundTeacher);
-            }
-            setLoading(false);
-          });
-        }, 500);
+        const teacherData = await teacherAPI.getTeacherProfile(id || "");
+        setTeacher(teacherData);
+        
+        const teacherCourses = await teacherAPI.getTeacherCourses(id || "");
+        setCourses(teacherCourses);
       } catch (error) {
-        console.error("Failed to fetch teacher:", error);
+        console.error("Failed to fetch teacher data:", error);
+      } finally {
         setLoading(false);
       }
     };
 
-    fetchTeacher();
+    fetchTeacherData();
 
     // Animation for page elements
     const tl = gsap.timeline();
@@ -167,7 +105,6 @@ const TeacherProfile = () => {
       <main className="flex-grow py-12">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Teacher Profile Sidebar */}
             <div className="lg:col-span-1">
               <Card className="profile-animate">
                 <CardContent className="p-6">
@@ -233,7 +170,6 @@ const TeacherProfile = () => {
               </Card>
             </div>
             
-            {/* Teacher Content */}
             <div className="lg:col-span-2">
               <Tabs defaultValue="courses" className="profile-animate">
                 <TabsList className="mb-6">
@@ -317,7 +253,6 @@ const TeacherProfile = () => {
                       </div>
                       
                       <div className="space-y-6">
-                        {/* This would be populated with actual reviews in a real app */}
                         <p className="text-center text-muted-foreground py-8">
                           Reviews are loading...
                         </p>

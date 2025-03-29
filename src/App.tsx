@@ -27,6 +27,7 @@ import TeacherCourses from "./pages/TeacherCourses";
 import CategoryPage from "./pages/CategoryPage";
 // Import teacher dashboard components
 import TeacherStudents from "./pages/dashboard/teacher/Students";
+import TeacherTeacherCourses from "./pages/dashboard/teacher/Courses";
 import TeacherSchedule from "./pages/dashboard/teacher/Schedule";
 import TeacherMessages from "./pages/dashboard/teacher/Messages";
 import TeacherUpload from "./pages/dashboard/teacher/Upload";
@@ -45,7 +46,14 @@ import { ThemeProvider } from "./components/theme/ThemeProvider";
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 const App = () => {
   useEffect(() => {
@@ -105,15 +113,15 @@ const App = () => {
               <Route path="/dashboard" element={<Dashboard />} />
               
               <Route path="/dashboard/student" element={<StudentDashboard />} />
-              <Route path="/dashboard/courses" element={<StudentCourses />} />
-              <Route path="/dashboard/schedule" element={<StudentSchedule />} />
-              <Route path="/dashboard/messages" element={<StudentMessages />} />
-              <Route path="/dashboard/achievements" element={<StudentAchievements />} />
-              <Route path="/dashboard/settings" element={<StudentSettings />} />
-              <Route path="/dashboard/help" element={<StudentHelp />} />
+              <Route path="/dashboard/student/courses" element={<StudentCourses />} />
+              <Route path="/dashboard/student/schedule" element={<StudentSchedule />} />
+              <Route path="/dashboard/student/messages" element={<StudentMessages />} />
+              <Route path="/dashboard/student/achievements" element={<StudentAchievements />} />
+              <Route path="/dashboard/student/settings" element={<StudentSettings />} />
+              <Route path="/dashboard/student/help" element={<StudentHelp />} />
               
               <Route path="/dashboard/teacher" element={<TeacherDashboard />} />
-              <Route path="/dashboard/teacher/courses" element={<TeacherCourses />} />
+              <Route path="/dashboard/teacher/courses" element={<TeacherTeacherCourses />} />
               <Route path="/dashboard/teacher/students" element={<TeacherStudents />} />
               <Route path="/dashboard/teacher/schedule" element={<TeacherSchedule />} />
               <Route path="/dashboard/teacher/messages" element={<TeacherMessages />} />

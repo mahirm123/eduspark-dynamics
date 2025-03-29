@@ -1,3 +1,4 @@
+
 import { Course } from "@/components/courses/CourseCard";
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
@@ -37,6 +38,101 @@ const authFetch = async (url: string, options: RequestInit = {}) => {
 
   return response;
 };
+
+// Mock data for teachers when API fails
+const mockTeachers = [
+  {
+    id: "1",
+    name: "John Smith",
+    title: "Web Development Instructor",
+    specialty: "Full-Stack Development",
+    bio: "Experienced web developer with 10+ years in the industry. Passionate about teaching the next generation of developers.",
+    rating: 4.9,
+    reviewsCount: 234,
+    coursesCount: 12,
+    studentsCount: 15420,
+    avatar: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
+  },
+  {
+    id: "2",
+    name: "Emily Johnson",
+    title: "UX/UI Design Expert",
+    specialty: "User Experience Design",
+    bio: "Award-winning designer with a focus on creating intuitive and beautiful user interfaces. Former design lead at major tech companies.",
+    rating: 4.8,
+    reviewsCount: 187,
+    coursesCount: 8,
+    studentsCount: 12340,
+    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1374&q=80"
+  },
+  {
+    id: "3",
+    name: "David Chen",
+    title: "Data Science Instructor",
+    specialty: "Machine Learning",
+    bio: "PhD in Computer Science with a specialization in Machine Learning. Helping students navigate the complex world of data science and AI.",
+    rating: 4.9,
+    reviewsCount: 213,
+    coursesCount: 10,
+    studentsCount: 13760,
+    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1374&q=80"
+  }
+];
+
+// Mock course data
+const mockCourses = [
+  {
+    id: "1",
+    title: "Complete Web Development Bootcamp",
+    description: "Learn HTML, CSS, JavaScript, React, Node.js, and more to become a full-stack web developer",
+    instructor: "John Smith",
+    price: 89.99,
+    rating: 4.9,
+    reviewsCount: 1234,
+    studentsCount: 8745,
+    level: "All Levels",
+    category: "Development",
+    duration: "48 hours",
+    lastUpdated: "April 2023",
+    image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1470&q=80",
+    language: "English",
+    bestseller: true
+  },
+  {
+    id: "2",
+    title: "JavaScript: From Fundamentals to Advanced",
+    description: "Master JavaScript with practical exercises and real-world projects",
+    instructor: "John Smith",
+    price: 69.99,
+    rating: 4.8,
+    reviewsCount: 876,
+    studentsCount: 5432,
+    level: "Beginner to Advanced",
+    category: "Development",
+    duration: "36 hours",
+    lastUpdated: "June 2023",
+    image: "https://images.unsplash.com/photo-1627398242454-45a1465c2479?auto=format&fit=crop&w=1374&q=80",
+    language: "English",
+    bestseller: false
+  },
+  {
+    id: "3",
+    title: "Modern React with Redux and Hooks",
+    description: "Learn to build powerful web applications with React, Redux, and modern JavaScript",
+    instructor: "John Smith",
+    price: 79.99,
+    rating: 4.9,
+    reviewsCount: 1021,
+    studentsCount: 6789,
+    level: "Intermediate",
+    category: "Development",
+    duration: "42 hours",
+    lastUpdated: "August 2023",
+    image: "https://images.unsplash.com/photo-1633356122102-3fe601e05bd2?auto=format&fit=crop&w=800&q=80",
+    language: "English",
+    bestseller: true
+  }
+];
 
 // Course API calls
 export const courseAPI = {
@@ -170,15 +266,7 @@ export const teacherAPI = {
     } catch (error) {
       console.error("Error fetching teacher profile:", error);
       // Fallback to mock data for demo purposes
-      return new Promise(resolve => {
-        setTimeout(() => {
-          import("@/hooks/useTeachers").then(({ useTeachers }) => {
-            const { teachers } = useTeachers();
-            const teacher = teachers.find(t => t.id === id);
-            resolve(teacher || null);
-          });
-        }, 500);
-      });
+      return Promise.resolve(mockTeachers.find(t => t.id === id) || null);
     }
   },
   
@@ -190,48 +278,7 @@ export const teacherAPI = {
     } catch (error) {
       console.error("Error fetching teacher courses:", error);
       // Fallback to mock data for demo purposes
-      return new Promise(resolve => {
-        setTimeout(() => {
-          // Get mock courses that have this teacher as instructor
-          const mockCourses = [
-            {
-              id: "1",
-              title: "Complete Web Development Bootcamp",
-              description: "Learn HTML, CSS, JavaScript, React, Node.js, and more to become a full-stack web developer",
-              instructor: "John Smith",
-              price: 89.99,
-              rating: 4.9,
-              reviewsCount: 1234,
-              studentsCount: 8745,
-              level: "All Levels",
-              category: "Development",
-              duration: "48 hours",
-              lastUpdated: "April 2023",
-              image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1470&q=80",
-              language: "English",
-              bestseller: true
-            },
-            {
-              id: "2",
-              title: "JavaScript: From Fundamentals to Advanced",
-              description: "Master JavaScript with practical exercises and real-world projects",
-              instructor: "John Smith",
-              price: 69.99,
-              rating: 4.8,
-              reviewsCount: 876,
-              studentsCount: 5432,
-              level: "Beginner to Advanced",
-              category: "Development",
-              duration: "36 hours",
-              lastUpdated: "June 2023",
-              image: "https://images.unsplash.com/photo-1627398242454-45a1465c2479?auto=format&fit=crop&w=1374&q=80",
-              language: "English",
-              bestseller: false
-            }
-          ];
-          resolve(mockCourses);
-        }, 500);
-      });
+      return Promise.resolve(mockCourses);
     }
   }
 };

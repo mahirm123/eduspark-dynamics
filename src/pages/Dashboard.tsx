@@ -18,6 +18,8 @@ const Dashboard = () => {
     } else {
       // If no role is stored, default to student
       setUserRole("student");
+      // Store a default role for demo purposes
+      localStorage.setItem("userRole", "student");
       toast({
         title: "No role found",
         description: "Defaulting to student dashboard. Please log in to access your proper dashboard.",
@@ -43,8 +45,10 @@ const Dashboard = () => {
       return <Navigate to="/dashboard/teacher" replace />;
     case "admin":
       return <Navigate to="/dashboard/admin" replace />;
+    case "student":
+      return <Navigate to="/dashboard/student" replace />;
     default:
-      return <Navigate to="/dashboard" replace />;
+      return <Navigate to="/dashboard/student" replace />;
   }
 };
 
