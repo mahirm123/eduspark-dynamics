@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import Navbar from "@/components/layout/Navbar";
@@ -17,7 +16,6 @@ import { Teacher } from "@/components/teachers/TeacherCard";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import gsap from "gsap";
 
-// Mock courses data with correct type properties
 const mockCourses = [
   {
     id: "1",
@@ -26,8 +24,8 @@ const mockCourses = [
     instructor: "John Smith",
     price: 89.99,
     rating: 4.9,
-    reviewsCount: 1234, // Changed from reviewCount
-    studentsCount: 8745, // Changed from students
+    reviewsCount: 1234,
+    studentsCount: 8745,
     level: "All Levels",
     category: "Development",
     duration: "48 hours",
@@ -43,8 +41,8 @@ const mockCourses = [
     instructor: "John Smith",
     price: 69.99,
     rating: 4.8,
-    reviewsCount: 876, // Changed from reviewCount
-    studentsCount: 5432, // Changed from students
+    reviewsCount: 876,
+    studentsCount: 5432,
     level: "Beginner to Advanced",
     category: "Development",
     duration: "36 hours",
@@ -60,8 +58,8 @@ const mockCourses = [
     instructor: "John Smith",
     price: 79.99,
     rating: 4.9,
-    reviewsCount: 1021, // Changed from reviewCount
-    studentsCount: 6789, // Changed from students
+    reviewsCount: 1021,
+    studentsCount: 6789,
     level: "Intermediate",
     category: "Development",
     duration: "42 hours",
@@ -77,8 +75,8 @@ const mockCourses = [
     instructor: "John Smith",
     price: 84.99,
     rating: 4.7,
-    reviewsCount: 743, // Changed from reviewCount
-    studentsCount: 4321, // Changed from students
+    reviewsCount: 743,
+    studentsCount: 4321,
     level: "Intermediate",
     category: "Development",
     duration: "38 hours",
@@ -94,8 +92,8 @@ const mockCourses = [
     instructor: "John Smith",
     price: 74.99,
     rating: 4.8,
-    reviewsCount: 654, // Changed from reviewCount
-    studentsCount: 3987, // Changed from students
+    reviewsCount: 654,
+    studentsCount: 3987,
     level: "Advanced",
     category: "Development",
     duration: "28 hours",
@@ -111,8 +109,8 @@ const mockCourses = [
     instructor: "John Smith",
     price: 89.99,
     rating: 4.9,
-    reviewsCount: 512, // Changed from reviewCount
-    studentsCount: 2876, // Changed from students
+    reviewsCount: 512,
+    studentsCount: 2876,
     level: "Intermediate to Advanced",
     category: "Development",
     duration: "32 hours",
@@ -133,13 +131,10 @@ const TeacherCourses = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // In a real app, this would be an API call to fetch teacher data
     const fetchTeacher = async () => {
       setLoading(true);
       try {
-        // Simulating API fetch with setTimeout
         setTimeout(() => {
-          // Find teacher from the hooks/useTeachers.tsx mock data
           import("@/hooks/useTeachers").then(({ useTeachers }) => {
             const { teachers } = useTeachers();
             const foundTeacher = teachers.find(t => t.id === id);
@@ -157,7 +152,6 @@ const TeacherCourses = () => {
 
     fetchTeacher();
 
-    // Animation for page elements
     const tl = gsap.timeline();
     tl.fromTo(
       ".course-animate",
@@ -167,10 +161,8 @@ const TeacherCourses = () => {
   }, [id]);
 
   useEffect(() => {
-    // Filter and sort courses based on search term and sort option
     let result = [...courses];
     
-    // Filter by search term
     if (searchTerm) {
       result = result.filter(course => 
         course.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -178,10 +170,9 @@ const TeacherCourses = () => {
       );
     }
     
-    // Sort courses
     switch (sortOption) {
       case "popular":
-        result.sort((a, b) => b.students - a.students);
+        result.sort((a, b) => b.studentsCount - a.studentsCount);
         break;
       case "newest":
         result.sort((a, b) => new Date(b.lastUpdated).getTime() - new Date(a.lastUpdated).getTime());
@@ -204,7 +195,6 @@ const TeacherCourses = () => {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    // Search is already handled in the useEffect
   };
 
   if (loading) {
@@ -245,7 +235,6 @@ const TeacherCourses = () => {
       <Navbar />
       <main className="flex-grow py-12">
         <div className="container mx-auto px-4">
-          {/* Page Header */}
           <div className="mb-8 course-animate">
             <Button variant="ghost" className="mb-4" asChild>
               <Link to={`/teachers/${teacher.id}`}>
@@ -268,7 +257,6 @@ const TeacherCourses = () => {
             </div>
           </div>
           
-          {/* Filters */}
           <Card className="mb-8 course-animate">
             <CardContent className="p-4">
               <div className="flex flex-col md:flex-row gap-4">
@@ -308,7 +296,6 @@ const TeacherCourses = () => {
             </CardContent>
           </Card>
           
-          {/* Courses Grid */}
           {filteredCourses.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 course-animate">
               {filteredCourses.map((course) => (
