@@ -1,4 +1,3 @@
-
 import { Course } from "@/components/courses/CourseCard";
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
@@ -158,5 +157,81 @@ export const userAPI = {
   getCurrentUser: async () => {
     const response = await authFetch('/users/me');
     return response.json();
+  }
+};
+
+// Teacher API calls
+export const teacherAPI = {
+  // Get teacher profile
+  getTeacherProfile: async (id: string) => {
+    try {
+      const response = await authFetch(`/users/teachers/${id}`);
+      return response.json();
+    } catch (error) {
+      console.error("Error fetching teacher profile:", error);
+      // Fallback to mock data for demo purposes
+      return new Promise(resolve => {
+        setTimeout(() => {
+          import("@/hooks/useTeachers").then(({ useTeachers }) => {
+            const { teachers } = useTeachers();
+            const teacher = teachers.find(t => t.id === id);
+            resolve(teacher || null);
+          });
+        }, 500);
+      });
+    }
+  },
+  
+  // Get teacher courses
+  getTeacherCourses: async (id: string) => {
+    try {
+      const response = await authFetch(`/courses/teacher/${id}`);
+      return response.json();
+    } catch (error) {
+      console.error("Error fetching teacher courses:", error);
+      // Fallback to mock data for demo purposes
+      return new Promise(resolve => {
+        setTimeout(() => {
+          // Get mock courses that have this teacher as instructor
+          const mockCourses = [
+            {
+              id: "1",
+              title: "Complete Web Development Bootcamp",
+              description: "Learn HTML, CSS, JavaScript, React, Node.js, and more to become a full-stack web developer",
+              instructor: "John Smith",
+              price: 89.99,
+              rating: 4.9,
+              reviewsCount: 1234,
+              studentsCount: 8745,
+              level: "All Levels",
+              category: "Development",
+              duration: "48 hours",
+              lastUpdated: "April 2023",
+              image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1470&q=80",
+              language: "English",
+              bestseller: true
+            },
+            {
+              id: "2",
+              title: "JavaScript: From Fundamentals to Advanced",
+              description: "Master JavaScript with practical exercises and real-world projects",
+              instructor: "John Smith",
+              price: 69.99,
+              rating: 4.8,
+              reviewsCount: 876,
+              studentsCount: 5432,
+              level: "Beginner to Advanced",
+              category: "Development",
+              duration: "36 hours",
+              lastUpdated: "June 2023",
+              image: "https://images.unsplash.com/photo-1627398242454-45a1465c2479?auto=format&fit=crop&w=1374&q=80",
+              language: "English",
+              bestseller: false
+            }
+          ];
+          resolve(mockCourses);
+        }, 500);
+      });
+    }
   }
 };

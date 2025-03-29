@@ -24,7 +24,8 @@ import StudentSettings from "./pages/dashboard/student/Settings";
 import StudentHelp from "./pages/dashboard/student/Help";
 import TeacherProfile from "./pages/TeacherProfile";
 import TeacherCourses from "./pages/TeacherCourses";
-// Import existing teacher pages
+import CategoryPage from "./pages/CategoryPage";
+// Import teacher dashboard components
 import TeacherStudents from "./pages/dashboard/teacher/Students";
 import TeacherSchedule from "./pages/dashboard/teacher/Schedule";
 import TeacherMessages from "./pages/dashboard/teacher/Messages";
@@ -99,6 +100,7 @@ const App = () => {
               <Route path="/teachers/:id/courses" element={<TeacherCourses />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
+              <Route path="/categories/:category" element={<CategoryPage />} />
               
               <Route path="/dashboard" element={<Dashboard />} />
               
