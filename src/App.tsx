@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import Index from "./pages/Index";
 import Courses from "./pages/Courses";
@@ -55,8 +55,40 @@ const queryClient = new QueryClient({
   },
 });
 
-const App = () => {
+// Page transition component
+const PageTransitionWrapper = ({ children }: { children: React.ReactNode }) => {
+  const location = useLocation();
+  
   useEffect(() => {
+    // Scroll to top on page change
+    window.scrollTo(0, 0);
+    
+    // Page transition animation
+    const tl = gsap.timeline();
+    tl.fromTo(
+      'main', 
+      { opacity: 0, y: 20 },
+      { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }
+    );
+    
+    // Add scroll animations
+    gsap.utils.toArray('.animate-on-scroll').forEach((element: any) => {
+      gsap.fromTo(
+        element,
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1, 
+          y: 0, 
+          duration: 0.8,
+          scrollTrigger: {
+            trigger: element,
+            start: "top 85%",
+          }
+        }
+      );
+    });
+    
+    // Smooth scroll for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function (e) {
         e.preventDefault();
@@ -72,25 +104,17 @@ const App = () => {
       });
     });
     
-    const pageTransition = (callback: () => void) => {
-      const tl = gsap.timeline();
-      tl.to('main', { 
-        opacity: 0, 
-        y: -20, 
-        duration: 0.3,
-        onComplete: callback
-      });
-      tl.from('main', { 
-        opacity: 0, 
-        y: 20, 
-        duration: 0.3,
-      });
-    };
-    
     return () => {
+      // Clean up animation
+      tl.kill();
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
-  }, []);
+  }, [location.pathname]);
+  
+  return <>{children}</>;
+};
 
+const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider defaultTheme="light">
@@ -98,45 +122,47 @@ const App = () => {
           <Toaster />
           <Sonner />
           <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/courses" element={<Courses />} />
-              <Route path="/courses/:id" element={<CourseDetail />} />
-              <Route path="/courses/:id/learn" element={<CourseLearning />} />
-              <Route path="/teachers" element={<Teachers />} />
-              <Route path="/teachers/:id" element={<TeacherProfile />} />
-              <Route path="/teachers/:id/courses" element={<TeacherCourses />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/categories/:category" element={<CategoryPage />} />
-              
-              <Route path="/dashboard" element={<Dashboard />} />
-              
-              <Route path="/dashboard/student" element={<StudentDashboard />} />
-              <Route path="/dashboard/student/courses" element={<StudentCourses />} />
-              <Route path="/dashboard/student/schedule" element={<StudentSchedule />} />
-              <Route path="/dashboard/student/messages" element={<StudentMessages />} />
-              <Route path="/dashboard/student/achievements" element={<StudentAchievements />} />
-              <Route path="/dashboard/student/settings" element={<StudentSettings />} />
-              <Route path="/dashboard/student/help" element={<StudentHelp />} />
-              
-              <Route path="/dashboard/teacher" element={<TeacherDashboard />} />
-              <Route path="/dashboard/teacher/courses" element={<TeacherTeacherCourses />} />
-              <Route path="/dashboard/teacher/students" element={<TeacherStudents />} />
-              <Route path="/dashboard/teacher/schedule" element={<TeacherSchedule />} />
-              <Route path="/dashboard/teacher/messages" element={<TeacherMessages />} />
-              <Route path="/dashboard/teacher/upload" element={<TeacherUpload />} />
-              
-              <Route path="/dashboard/admin" element={<AdminDashboard />} />
-              <Route path="/dashboard/admin/users" element={<AdminUsers />} />
-              <Route path="/dashboard/admin/courses" element={<AdminCourses />} />
-              <Route path="/dashboard/admin/reports" element={<AdminReports />} />
-              <Route path="/dashboard/admin/payments" element={<AdminPayments />} />
-              <Route path="/dashboard/admin/support" element={<AdminSupport />} />
-              <Route path="/dashboard/admin/notifications" element={<AdminNotifications />} />
-              
-              <Route path="*" element={<NotFound />} />
-            </Routes>
+            <PageTransitionWrapper>
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/courses" element={<Courses />} />
+                <Route path="/courses/:id" element={<CourseDetail />} />
+                <Route path="/courses/:id/learn" element={<CourseLearning />} />
+                <Route path="/teachers" element={<Teachers />} />
+                <Route path="/teachers/:id" element={<TeacherProfile />} />
+                <Route path="/teachers/:id/courses" element={<TeacherCourses />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<Signup />} />
+                <Route path="/categories/:category" element={<CategoryPage />} />
+                
+                <Route path="/dashboard" element={<Dashboard />} />
+                
+                <Route path="/dashboard/student" element={<StudentDashboard />} />
+                <Route path="/dashboard/student/courses" element={<StudentCourses />} />
+                <Route path="/dashboard/student/schedule" element={<StudentSchedule />} />
+                <Route path="/dashboard/student/messages" element={<StudentMessages />} />
+                <Route path="/dashboard/student/achievements" element={<StudentAchievements />} />
+                <Route path="/dashboard/student/settings" element={<StudentSettings />} />
+                <Route path="/dashboard/student/help" element={<StudentHelp />} />
+                
+                <Route path="/dashboard/teacher" element={<TeacherDashboard />} />
+                <Route path="/dashboard/teacher/courses" element={<TeacherTeacherCourses />} />
+                <Route path="/dashboard/teacher/students" element={<TeacherStudents />} />
+                <Route path="/dashboard/teacher/schedule" element={<TeacherSchedule />} />
+                <Route path="/dashboard/teacher/messages" element={<TeacherMessages />} />
+                <Route path="/dashboard/teacher/upload" element={<TeacherUpload />} />
+                
+                <Route path="/dashboard/admin" element={<AdminDashboard />} />
+                <Route path="/dashboard/admin/users" element={<AdminUsers />} />
+                <Route path="/dashboard/admin/courses" element={<AdminCourses />} />
+                <Route path="/dashboard/admin/reports" element={<AdminReports />} />
+                <Route path="/dashboard/admin/payments" element={<AdminPayments />} />
+                <Route path="/dashboard/admin/support" element={<AdminSupport />} />
+                <Route path="/dashboard/admin/notifications" element={<AdminNotifications />} />
+                
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </PageTransitionWrapper>
           </BrowserRouter>
         </TooltipProvider>
       </ThemeProvider>
