@@ -9,7 +9,7 @@ import {
   Users, 
   Megaphone,
   Rocket,
-  Flask,
+  Beaker,  // Changed Flask to Beaker which is available in lucide-react
   Music,
   Globe,
   Heart,
@@ -93,7 +93,7 @@ const categories = [
   },
   {
     name: "Science",
-    icon: Flask,
+    icon: Beaker,  // Changed Flask to Beaker
     courses: "320",
     color: "bg-teal-100 text-teal-600",
     hoverColor: "hover:bg-teal-600 hover:text-white",
