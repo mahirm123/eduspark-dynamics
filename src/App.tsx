@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -42,6 +41,7 @@ import AdminReports from "./pages/dashboard/admin/Reports";
 import AdminPayments from "./pages/dashboard/admin/Payments";
 import AdminSupport from "./pages/dashboard/admin/Support";
 import AdminNotifications from "./pages/dashboard/admin/Notifications";
+import AdminHelp from "./pages/dashboard/admin/Help";
 import NotFound from "./pages/NotFound";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -59,15 +59,12 @@ const queryClient = new QueryClient({
   },
 });
 
-// Page transition component
 const PageTransitionWrapper = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
   
   useEffect(() => {
-    // Scroll to top on page change
     window.scrollTo(0, 0);
     
-    // Page transition animation
     const tl = gsap.timeline();
     tl.fromTo(
       'main', 
@@ -75,7 +72,6 @@ const PageTransitionWrapper = ({ children }: { children: React.ReactNode }) => {
       { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }
     );
     
-    // Add scroll animations
     gsap.utils.toArray('.animate-on-scroll').forEach((element: any) => {
       gsap.fromTo(
         element,
@@ -92,7 +88,6 @@ const PageTransitionWrapper = ({ children }: { children: React.ReactNode }) => {
       );
     });
     
-    // Smooth scroll for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function (e) {
         e.preventDefault();
@@ -109,7 +104,6 @@ const PageTransitionWrapper = ({ children }: { children: React.ReactNode }) => {
     });
     
     return () => {
-      // Clean up animation
       tl.kill();
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
@@ -167,6 +161,7 @@ const App = () => {
                 <Route path="/dashboard/admin/payments" element={<AdminPayments />} />
                 <Route path="/dashboard/admin/support" element={<AdminSupport />} />
                 <Route path="/dashboard/admin/notifications" element={<AdminNotifications />} />
+                <Route path="/dashboard/admin/help" element={<AdminHelp />} />
                 
                 <Route path="*" element={<NotFound />} />
               </Routes>
