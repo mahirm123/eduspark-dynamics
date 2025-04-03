@@ -32,6 +32,7 @@ import TeacherSchedule from "./pages/dashboard/teacher/Schedule";
 import TeacherMessages from "./pages/dashboard/teacher/Messages";
 import TeacherUpload from "./pages/dashboard/teacher/Upload";
 import TeacherSettings from "./pages/dashboard/teacher/Settings";
+import TeacherHelp from "./pages/dashboard/teacher/Help";
 import CreateLiveSession from "./pages/dashboard/teacher/CreateLiveSession";
 import CreateCourse from "./pages/dashboard/teacher/CreateCourse";
 // Import admin dashboard components
@@ -155,6 +156,7 @@ const App = () => {
                 <Route path="/dashboard/teacher/messages" element={<TeacherMessages />} />
                 <Route path="/dashboard/teacher/upload" element={<TeacherUpload />} />
                 <Route path="/dashboard/teacher/settings" element={<TeacherSettings />} />
+                <Route path="/dashboard/teacher/help" element={<TeacherHelp />} />
                 <Route path="/dashboard/teacher/create-live-session" element={<CreateLiveSession />} />
                 <Route path="/dashboard/teacher/create-course" element={<CreateCourse />} />
                 

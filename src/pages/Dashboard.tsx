@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useUserDashboard } from "@/hooks/useUserDashboard";
 import { UserRole } from "@/components/dashboard/DashboardSidebar";
 import { useToast } from "@/hooks/use-toast";
@@ -10,6 +10,7 @@ const Dashboard = () => {
   const { userData, isLoading } = useUserDashboard();
   const [userRole, setUserRole] = useState<UserRole>("student");
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Get user role from localStorage (set during login)
@@ -28,6 +29,24 @@ const Dashboard = () => {
       });
     }
   }, [toast]);
+
+  useEffect(() => {
+    // Navigate to the appropriate dashboard based on user role
+    if (!isLoading) {
+      switch (userRole) {
+        case "teacher":
+          navigate("/dashboard/teacher", { replace: true });
+          break;
+        case "admin":
+          navigate("/dashboard/admin", { replace: true });
+          break;
+        case "student":
+        default:
+          navigate("/dashboard/student", { replace: true });
+          break;
+      }
+    }
+  }, [userRole, isLoading, navigate]);
 
   if (isLoading) {
     return (
@@ -53,17 +72,15 @@ const Dashboard = () => {
     }
   };
 
-  // Redirect to the appropriate dashboard based on user role
-  switch (userRole) {
-    case "teacher":
-      return <Navigate to="/dashboard/teacher" replace />;
-    case "admin":
-      return <Navigate to="/dashboard/admin" replace />;
-    case "student":
-      return <Navigate to="/dashboard/student" replace />;
-    default:
-      return <Navigate to="/dashboard/student" replace />;
-  }
+  // The useEffect will handle the navigation, this is a fallback
+  return (
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="text-center">
+        {getRoleIcon()}
+        <p className="mt-4 text-xl font-medium">Redirecting to your dashboard...</p>
+      </div>
+    </div>
+  );
 };
 
 export default Dashboard;

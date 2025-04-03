@@ -162,7 +162,11 @@ const DashboardSidebar = ({ role }: DashboardSidebarProps) => {
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild tooltip="Settings">
+                <SidebarMenuButton 
+                  asChild 
+                  isActive={isActive(`/dashboard/${role}/settings`)}
+                  tooltip="Settings"
+                >
                   <Link to={`/dashboard/${role}/settings`}>
                     <Settings className={iconColors.settings} />
                     <span>Settings</span>
@@ -170,7 +174,11 @@ const DashboardSidebar = ({ role }: DashboardSidebarProps) => {
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild tooltip="Help & Support">
+                <SidebarMenuButton 
+                  asChild 
+                  isActive={isActive(`/dashboard/${role}/help`)} 
+                  tooltip="Help & Support"
+                >
                   <Link to={`/dashboard/${role}/help`}>
                     <HelpCircle className={iconColors.help} />
                     <span>Help & Support</span>
