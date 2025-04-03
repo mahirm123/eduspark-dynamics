@@ -1,6 +1,6 @@
 
 import { useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -119,6 +119,7 @@ const teacherData = {
 const TeacherDashboard = () => {
   const statsRef = useRef<HTMLDivElement>(null);
   const coursesRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // GSAP animations
@@ -152,6 +153,14 @@ const TeacherDashboard = () => {
     }
   }, []);
 
+  const handleCreateLiveSession = () => {
+    navigate('/dashboard/teacher/create-live-session');
+  };
+
+  const handleCreateNewCourse = () => {
+    navigate('/dashboard/teacher/create-course');
+  };
+
   return (
     <DashboardLayout role="teacher">
       <div className="space-y-8">
@@ -161,11 +170,11 @@ const TeacherDashboard = () => {
             <p className="text-muted-foreground">Manage your courses and students</p>
           </div>
           <div className="flex gap-2">
-            <Button size="sm" variant="outline">
+            <Button size="sm" variant="outline" onClick={handleCreateLiveSession}>
               <Video className="mr-2 h-4 w-4" />
               Create Live Session
             </Button>
-            <Button size="sm">
+            <Button size="sm" onClick={handleCreateNewCourse}>
               <PlusCircle className="mr-2 h-4 w-4" />
               Create New Course
             </Button>

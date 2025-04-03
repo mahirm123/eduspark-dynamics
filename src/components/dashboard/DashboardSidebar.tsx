@@ -163,7 +163,7 @@ const DashboardSidebar = ({ role }: DashboardSidebarProps) => {
             <SidebarMenu>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild tooltip="Settings">
-                  <Link to="/dashboard/settings">
+                  <Link to={`/dashboard/${role}/settings`}>
                     <Settings className={iconColors.settings} />
                     <span>Settings</span>
                   </Link>
@@ -171,7 +171,7 @@ const DashboardSidebar = ({ role }: DashboardSidebarProps) => {
               </SidebarMenuItem>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild tooltip="Help & Support">
-                  <Link to="/dashboard/help">
+                  <Link to={`/dashboard/${role}/help`}>
                     <HelpCircle className={iconColors.help} />
                     <span>Help & Support</span>
                   </Link>

@@ -31,6 +31,9 @@ import TeacherTeacherCourses from "./pages/dashboard/teacher/Courses";
 import TeacherSchedule from "./pages/dashboard/teacher/Schedule";
 import TeacherMessages from "./pages/dashboard/teacher/Messages";
 import TeacherUpload from "./pages/dashboard/teacher/Upload";
+import TeacherSettings from "./pages/dashboard/teacher/Settings";
+import CreateLiveSession from "./pages/dashboard/teacher/CreateLiveSession";
+import CreateCourse from "./pages/dashboard/teacher/CreateCourse";
 // Import admin dashboard components
 import AdminUsers from "./pages/dashboard/admin/Users";
 import AdminCourses from "./pages/dashboard/admin/Courses";
@@ -151,6 +154,9 @@ const App = () => {
                 <Route path="/dashboard/teacher/schedule" element={<TeacherSchedule />} />
                 <Route path="/dashboard/teacher/messages" element={<TeacherMessages />} />
                 <Route path="/dashboard/teacher/upload" element={<TeacherUpload />} />
+                <Route path="/dashboard/teacher/settings" element={<TeacherSettings />} />
+                <Route path="/dashboard/teacher/create-live-session" element={<CreateLiveSession />} />
+                <Route path="/dashboard/teacher/create-course" element={<CreateCourse />} />
                 
                 <Route path="/dashboard/admin" element={<AdminDashboard />} />
                 <Route path="/dashboard/admin/users" element={<AdminUsers />} />
